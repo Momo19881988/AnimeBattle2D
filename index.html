@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anime Battle 2D</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101426;color:white;font-family:Arial;text-align:center}
+h2{color:#ffd65a}
+#arena{position:relative;max-width:600px;height:340px;margin:15px auto;background:linear-gradient(#262e57 0 65%,#613d62 65%);overflow:hidden;border:3px solid #7787c8;border-radius:12px}
+.fighter{position:absolute;bottom:55px;width:80px;height:115px}
+.hero{left:12%}.enemy{right:12%}
+.head{width:36px;height:36px;margin:auto;background:#ffd4ad;border-radius:50%;border:3px solid #20243b}
+.hair{width:43px;height:19px;margin:0 auto -5px;background:#21d4fd;clip-path:polygon(0 70%,15% 0,35% 40%,60% 0,100% 30%,85% 100%)}
+.enemy .hair{background:#ff465d}
+.body{height:48px;width:48px;margin:auto;background:#287bff;border-radius:12px 12px 5px 5px}
+.enemy .body{background:#c62d62}
+.arm{position:absolute;width:15px;height:38px;background:#ffd4ad;top:48px;border-radius:8px}
+.arm.a{left:4px;transform:rotate(25deg)}.arm.b{right:4px;transform:rotate(-35deg)}
+.leg{position:absolute;top:88px;width:17px;height:29px;background:#202b53;border-radius:6px}
+.leg.a{left:18px}.leg.b{right:18px}
+.hp{height:16px;background:#333;margin:8px auto;width:42%;border-radius:8px;overflow:hidden}
+.fill{height:100%;width:100%;background:#4cff83;transition:width .3s}
+#status{color:#ffe77c;min-height:25px}
+button{padding:12px 18px;margin:5px;border:0;border-radius:10px;background:#7457ff;color:white;font-weight:bold;font-size:16px}
+button:active{transform:scale(.96)}
+</style>
+</head>
+<body>
+<h2>⚔️ ANIME BATTLE</h2>
+<div>فريق الأبطال ضد الخصم</div>
+<div class="hp"><div id="ehp" class="fill"></div></div>
+<div id="arena">
+ <div class="fighter hero">
+  <div class="hair"></div><div class="head"></div>
+  <div class="body"></div><i class="arm a"></i><i class="arm b"></i>
+  <i class="leg a"></i><i class="leg b"></i>
+ </div>
+ <div class="fighter enemy">
+  <div class="hair"></div><div class="head"></div>
+  <div class="body"></div><i class="arm a"></i><i class="arm b"></i>
+  <i class="leg a"></i><i class="leg b"></i>
+ </div>
+</div>
+<div class="hp"><div id="php" class="fill"></div></div>
+<div id="status">اختر هجومًا لبدء القتال!</div>
+<button onclick="attack(12)">👊 هجوم</button>
+<button onclick="attack(25)">⚡ ضربة قوية</button>
+<button onclick="reset()">🔄 إعادة</button>
+<script>
+let p=100,e=100,busy=false;
+function draw(){
+ document.getElementById('php').style.width=p+'%';
+ document.getElementById('ehp').style.width=e+'%';
+}
+function attack(d){
+ if(busy||p<=0||e<=0)return;
+ e=Math.max(0,e-d);draw();
+ document.getElementById('status').textContent=e===0?'🏆 فزت بالمعركة!':'ضربت الخصم!';
+ if(e===0)return;
+ busy=true;
+ setTimeout(()=>{
+  p=Math.max(0,p-(8+Math.floor(Math.random()*12)));
+  draw();
+  document.getElementById('status').textContent=p===0?'انتهت المعركة! أعد المحاولة.':'الخصم يرد الهجوم!';
+  busy=false;
+ },600);
+}
+function reset(){p=100;e=100;busy=false;draw();document.getElementById('status').textContent='اختر هجومًا لبدء القتال!'}
+</script>
+</body>
+</html>
